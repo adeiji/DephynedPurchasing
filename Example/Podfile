@@ -1,0 +1,6 @@
+use_frameworks!
+target 'DephynedPurchasing_Tests' do
+  pod 'DephynedPurchasing', :path => '../'
+  
+  
+end
