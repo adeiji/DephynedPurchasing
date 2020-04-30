@@ -64,6 +64,7 @@ And that's it!  I mentioned in a comment above, but just to reiterate, you shoul
 2. Then you need to deploy it to heroku.  You can view deployment instructions at: https://heroku.com
 3. Once you've deployed, you will need to set the config vars on Heroku, you'll need the following config vars:
 
+```
 // These are from Firebase
 PROJECT_ID
 PRIVATE_KEY_ID
@@ -79,6 +80,7 @@ DATABASE_URL
 // From Stripe
 STRIPE_SECRET_KEY
 STRIPE_PUBLISHABLE_KEY
+```
 
 > You can view how to set config vars on Heroku here: https://devcenter.heroku.com/articles/config-vars
 
