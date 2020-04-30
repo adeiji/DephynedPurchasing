@@ -141,11 +141,21 @@ And that's all for simple Stripe integration.  Now if you want to integrate Appl
 
 ## Apple Pay
 
-Integrating Apple Pay is pretty straight forward.  Most of what you need to do is the same, here's a function showing Apple Pay integration.  Make sure that you have enabled Apple Pay support on Stripe as well.
+Integrating Apple Pay is pretty straight forward.  Make sure that you have enabled Apple Pay support on Stripe as well.  Also make sure that you implement the STPPaymentProtocol protocol.  
 
 ```
+class YourViewController: STPPaymentProtocol
+```
+
+Now the only thing you need to do is implement this function below.
+
+```
+// Get the apple pay button
 let applePayButton: PKPaymentButton = PKPaymentButton(paymentButtonType: .plain, paymentButtonStyle: .black)
+
+// Set the payment secret to the payment secret of the stripeManager
 self.paymentIntentClientSecret = stripeManager.paymentIntentClientSecret
+
 // The merchant identifier needs to be set up on stripe.com
 let paymentRequest = Stripe.paymentRequest(withMerchantIdentifier: "your-merchant-identifier", country: "US", currency: "USD")
 
@@ -155,14 +165,17 @@ applePayButton.isEnabled = Stripe.deviceSupportsApplePay()
 // Configure the line items on the payment request
 paymentRequest.paymentSummaryItems = [
     PKPaymentSummaryItem(label: "your-payment-name, amount: NSDecimalNumber(integerLiteral: {{your-tour-price}})),
+    
     // The final line should represent your company;
     // it'll be prepended with the word "Pay" (i.e. "Pay iHats, Inc $50")
     PKPaymentSummaryItem(label: "company-name", amount: NSDecimalNumber(integerLiteral: {{amount}})),
 ]
+
 // The user presses the applePayButton.  I use closures for buttons but you may use targets.  It's the code inside the
 // closure that's important
 applePayButton.addTargetClosure { [weak self] (_) in
     guard let self = self else { return }
+    
     // Present Apple Pay payment sheet
     if  Stripe.canSubmitPaymentRequest(paymentRequest),
         let paymentAuthorizationViewController = PKPaymentAuthorizationViewController(paymentRequest: paymentRequest) {
