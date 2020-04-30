@@ -139,13 +139,15 @@ And that's all for simple Stripe integration.  Now if you want to integrate Appl
 
 ## Apple Pay
 
-Integrating Apple Pay is pretty straight forward.  Most of what you need to do is the same, here's a function showing Apple Pay integration.  
+Integrating Apple Pay is pretty straight forward.  Most of what you need to do is the same, here's a function showing Apple Pay integration.  Make sure that you have enabled Apple Pay support on Stripe as well.
 
 ```
 let applePayButton: PKPaymentButton = PKPaymentButton(paymentButtonType: .plain, paymentButtonStyle: .black)
 self.paymentIntentClientSecret = stripeManager.paymentIntentClientSecret
 // The merchant identifier needs to be set up on stripe.com
 let paymentRequest = Stripe.paymentRequest(withMerchantIdentifier: "your-merchant-identifier", country: "US", currency: "USD")
+
+// Check to see if you have enabled Apple pay support on Stripe
 applePayButton.isEnabled = Stripe.deviceSupportsApplePay()
 
 // Configure the line items on the payment request
@@ -155,7 +157,8 @@ paymentRequest.paymentSummaryItems = [
     // it'll be prepended with the word "Pay" (i.e. "Pay iHats, Inc $50")
     PKPaymentSummaryItem(label: "company-name", amount: NSDecimalNumber(integerLiteral: {{amount}})),
 ]
-
+// The user presses the applePayButton.  I use closures for buttons but you may use targets.  It's the code inside the
+// closure that's important
 applePayButton.addTargetClosure { [weak self] (_) in
     guard let self = self else { return }
     // Present Apple Pay payment sheet
@@ -169,7 +172,7 @@ applePayButton.addTargetClosure { [weak self] (_) in
 }
 ```
 
-This function must be included as well.  It is called after the workflow is finished of paying using Apple Pay
+The last function that must be implemented is the one below.  It is called after the workflow is finished of paying using Apple Pay.  The paymentSucceeded value is set within the Stripe Payment protocol
 ```
 public func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
   // Dismiss payment authorization view controller
