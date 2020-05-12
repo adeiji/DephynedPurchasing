@@ -5,7 +5,7 @@ There are two ways that you can handle purchasing, and that's InApp Purchasing t
 
 ## In-App Purchasing
 
-First make sure you implmenent the Purchase Protocol which will give you access to the necessary functions
+First make sure you implement the Purchase Protocol which will give you access to the necessary functions
 
 ```
 class YourViewController: PurchaseProtocol
@@ -34,6 +34,7 @@ self.pkIapHandler = PKIAPHandler(productIds: ["your-product-id-1", "your-product
 Making a purchase is simple.
 First you need to get your products from the apple servers.  Use the following:
 ```
+// If you're not sure where this is, look up above.  You have to implement the PurchaseProtocol
 self.loadProducts { (products) in
   // self.products should be an array of SKProduct.  
   // Technically you don't have to store this value, but everytime you want to make a purchase you'll have to 
