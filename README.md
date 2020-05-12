@@ -31,19 +31,7 @@ self.pkIapHandler = PKIAPHandler(productIds: ["your-product-id-1", "your-product
 
 #### Making a Purchase
 
-Making a purchase is simple.
-First you need to get your products from the apple servers.  Use the following:
-```
-// If you're not sure where this is, look up above.  You have to implement the PurchaseProtocol
-self.loadProducts { (products) in
-  // self.products should be an array of SKProduct.  
-  // Technically you don't have to store this value, but everytime you want to make a purchase you'll have to 
-  // load the products again if you don't store these products somewhere, so it's up to you
-  self.products = products 
-}
-```
-
-Once you have the products, you can simple make a purchase using an Id.
+Just call the purchaseProductWithId method and pass it the id of the InAppPurchase
 
 ```
 self.purchaseProductWithId(id: "your-product-id") { (success) in
