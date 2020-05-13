@@ -23,15 +23,9 @@ If you have not created your products yet using AppStore Connect than you should
 4. Click on each In-App purchase and grab it's Product Id on the right hand side
 ````
 
-Next instantiate the pkIapHandler object, giving it your list of product Ids. 
-```
-// I would probably create an enum for your Product Ids
-self.pkIapHandler = PKIAPHandler(productIds: ["your-product-id-1", "your-product-id-2", "your-product-id-3", "your-product-id-4"])
-```
-
 #### Making a Purchase
 
-Just call the purchaseProductWithId method and pass it the id of the InAppPurchase
+Just call the purchaseProductWithId method and pass it the id of an InAppPurchase
 
 ```
 self.purchaseProductWithId(id: "your-product-id") { (success) in
