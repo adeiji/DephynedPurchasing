@@ -11,13 +11,7 @@ import StoreKit
 import PassKit
 
 public protocol PurchaseProtocol {
-    
-    /**
-     When initializing this object make sure that you give it a list of product ids for your app
-     For more information on this view: https://developer.apple.com/library/archive/qa/qa1329/_index.html
-     */
-    var pkIapHandler:PKIAPHandler { get }
-    
+        
 }
 
 public extension PurchaseProtocol  {
@@ -29,7 +23,7 @@ public extension PurchaseProtocol  {
      the PKIAPHandler object
      */
     private func loadProducts (completion: @escaping ([SKProduct]) -> Void) {
-        self.pkIapHandler.fetchAvailableProducts { (products) in
+        PKIAPHandler.shared.fetchAvailableProducts { (products) in
             completion(products)
         }
     }
@@ -50,15 +44,17 @@ public extension PurchaseProtocol  {
      - parameter id: The id of the proudct to purchase
      - parameter completion: Returns whether or not the purchase was successful
      */
-    func purchaseProductWithId(id: String, completion: @escaping (Bool) -> Void) {        
+    func purchaseProductWithId(id: String, completion: @escaping (Bool, PKIAPHandlerAlertType) -> Void) {
         self.loadProducts { (products) in
             guard let product = self.getProductWithId(id: id, products: products) else {
                 return
             }
             
-            self.purchaseProduct(product: product) { (success) in
+            self.purchaseProduct(product: product) { (success, alertType) in
                 if success {
-                    completion(success)
+                    completion(success, alertType)
+                } else {
+                    completion(false, alertType)
                 }
             }
         }
@@ -67,13 +63,13 @@ public extension PurchaseProtocol  {
     /**
      Purchase a product
      */
-    private func purchaseProduct (product: SKProduct, completion: @escaping (Bool) -> ()) {
-        self.pkIapHandler.purchase(product: product) { (alertType, product, transaction) in
+    private func purchaseProduct (product: SKProduct, completion: @escaping (Bool, PKIAPHandlerAlertType) -> ()) {
+        PKIAPHandler.shared.purchase(product: product) { (alertType, product, transaction) in
             // If product and transaction were both not nil that means that the purchase was a success
             if let _ = product, let _ = transaction {
-                completion(true)
+                completion(true, alertType)
             } else {
-                completion(false)
+                completion(false, alertType)
             }
         }
     }

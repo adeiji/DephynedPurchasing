@@ -24,7 +24,7 @@ public extension STPPaymentProtocol {
     
     func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController, didAuthorizePayment payment: PKPayment, handler completion: @escaping (PKPaymentAuthorizationResult) -> Void) {
         // Convert the PKPayment into a PaymentMethod
-        STPAPIClient.shared().createPaymentMethod(with: payment) { (paymentMethod: STPPaymentMethod?, error: Error?) in
+        STPAPIClient.shared.createPaymentMethod(with: payment) { (paymentMethod: STPPaymentMethod?, error: Error?) in
             guard let paymentMethod = paymentMethod, error == nil else {
                 // Present error to customer...
                 return
@@ -39,7 +39,7 @@ public extension STPPaymentProtocol {
             paymentIntentParams.paymentMethodId = paymentMethod.stripeId
 
             // Confirm the PaymentIntent with the payment method
-            STPPaymentHandler.shared().confirmPayment(withParams: paymentIntentParams, authenticationContext: self) { (status, paymentIntent, error) in
+            STPPaymentHandler.shared().confirmPayment(paymentIntentParams, with: self) { (status, paymentIntent, error) in
                 switch (status) {
                 case .succeeded:
                     // Save payment success
