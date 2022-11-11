@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import Stripe
+import StripePayments
 import RxSwift
 import RxCocoa
 

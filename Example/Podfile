@@ -1,9 +1,24 @@
 use_frameworks!
+
+platform :ios, '13.0'
 target 'DephynedPurchasing_Tests' do
   pod 'DephynedPurchasing', :path => '../'
 
   pod 'RxSwift'
   pod 'RxCocoa'
-  pod 'Stripe'
+  pod 'StripePayments'
   
+end
+
+# Because of either a bug or a new feature set in Xcode, whenever installing a cocoapod if you don't explicitely set the DEVELOPMENT_TEAM ID then the app will give you an error
+# This is the current work around for this
+# See https://github.com/CocoaPods/CocoaPods/issues/11402
+post_install do |installer|
+  installer.generated_projects.each do |project|
+    project.targets.each do |target|
+        target.build_configurations.each do |config|
+            config.build_settings["DEVELOPMENT_TEAM"] = 'HJPTQ3N75W'
+         end
+    end
+  end
 end

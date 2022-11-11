@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-import Stripe
+import StripePayments
 import PassKit
 
 public protocol STPPaymentProtocol: UIViewController, PKPaymentAuthorizationViewControllerDelegate, STPAuthenticationContext {
@@ -49,8 +49,9 @@ public extension STPPaymentProtocol {
                     completion(PKPaymentAuthorizationResult(status: .failure, errors: nil))
                 case .failed:
                     // Save/handle error
-                    let errors = [STPAPIClient.pkPaymentError(forStripeError: error)].compactMap({ $0 })
-                    completion(PKPaymentAuthorizationResult(status: .failure, errors: errors))
+                    if let error = error {
+                        completion(PKPaymentAuthorizationResult(status: .failure, errors: [error]))
+                    }
                 @unknown default:
                     completion(PKPaymentAuthorizationResult(status: .failure, errors: nil))
                 }

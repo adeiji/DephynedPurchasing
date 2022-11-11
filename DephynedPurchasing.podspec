@@ -28,7 +28,7 @@ This library makes it very easy to integrate Stripe and PurchaseKit into your iO
   s.source           = { :git => 'https://github.com/adeiji/DephynedPurchasing.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.ios.deployment_target = '11.0'
+  s.ios.deployment_target = '13.0'
 
   s.source_files = 'DephynedPurchasing/Classes/**/*'
   
@@ -39,7 +39,7 @@ This library makes it very easy to integrate Stripe and PurchaseKit into your iO
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
   # s.dependency 'AFNetworking', '~> 2.3'
-  s.dependency 'Stripe'
+  s.dependency 'StripePayments'
   s.dependency 'RxSwift'
   s.dependency 'RxCocoa'
 end
