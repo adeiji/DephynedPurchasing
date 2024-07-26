@@ -6,7 +6,7 @@ target 'DephynedPurchasing_Tests' do
 
   pod 'RxSwift'
   pod 'RxCocoa'
-  pod 'StripePayments'
+  pod 'Stripe'
   
 end
 

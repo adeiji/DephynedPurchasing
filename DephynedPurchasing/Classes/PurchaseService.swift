@@ -142,6 +142,12 @@ public class PKIAPHandler: NSObject, SKPaymentQueueDelegate {
     }
     
     public func verifyReceipt (verifyReceiptURL: URL? = nil, completion: ((NSDictionary?) -> Void)? = nil) {
+    #if DEBUG
+    let urlString = "https://sandbox.itunes.apple.com/verifyReceipt"
+    #else
+    let urlString = "https://buy.itunes.apple.com/verifyReceipt"
+    #endif
+        
         if let receiptUrl = Bundle.main.appStoreReceiptURL {
             let receipt = try? Data(contentsOf: receiptUrl, options: .alwaysMapped)
             if receipt == nil {
@@ -154,7 +160,7 @@ public class PKIAPHandler: NSObject, SKPaymentQueueDelegate {
             let receiptDictionary = ["receipt-data": receiptData, "password": "4e0c1a8270a447948ff4d8dcda6be109"]
             let requestData = try? JSONSerialization.data(withJSONObject: receiptDictionary, options: .prettyPrinted)
             
-            let url = verifyReceiptURL  ?? URL(string: "https://buy.itunes.apple.com/verifyReceipt")
+            let url = verifyReceiptURL ?? URL(string: urlString)
                         
             if let url = url {
                 var request = URLRequest(url: url)
@@ -175,7 +181,7 @@ public class PKIAPHandler: NSObject, SKPaymentQueueDelegate {
                     if let jsonResponse = try? JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? NSDictionary {
                         self.hasReceiptData = true
                         if (jsonResponse["status"] as? Int == 21007) {
-                            self.verifyReceipt(verifyReceiptURL: URL(string: "https://sandbox.itunes.apple.com/verifyReceipt"), completion: completion)
+                            self.verifyReceipt(verifyReceiptURL: URL(string: urlString), completion: completion)
                             return
                         }
                         
