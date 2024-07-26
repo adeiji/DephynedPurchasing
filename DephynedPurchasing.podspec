@@ -39,7 +39,7 @@ This library makes it very easy to integrate Stripe and PurchaseKit into your iO
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
   # s.dependency 'AFNetworking', '~> 2.3'
-  s.dependency 'StripePayments'
+  s.dependency 'Stripe'
   s.dependency 'RxSwift'
   s.dependency 'RxCocoa'
 end
